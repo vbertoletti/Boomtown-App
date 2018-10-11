@@ -19,10 +19,10 @@ function tagsQueryString(tags, itemid, result) {
 
 module.exports = (postgres) => {
   return {
-    async createUser({ fullname, email, password }) {
+    async createUser({ email, fullname, bio, password }) {
       const newUserInsert = {
-        text: '', // @TODO: Authentication - Server
-        values: [fullname, email, password]
+        text: 'INSERT INTO users (email, fullname, bio, password )', 
+        values: [email, fullname, bio, password]
       };
       try {
         const user = await postgres.query(newUserInsert);
@@ -40,7 +40,7 @@ module.exports = (postgres) => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: '', // @TODO: Authentication - Server
+        text: 'SELECT * FROM users WHERE users.email=$1',
         values: [email]
       };
       try {
@@ -52,73 +52,45 @@ module.exports = (postgres) => {
       }
     },
     async getUserById(id) {
-      /**
-       *  @TODO: Handling Server Errors
-       *
-       *  Inside of our resource methods we get to determine when and how errors are returned
-       *  to our resolvers using try / catch / throw semantics.
-       *
-       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
-       *  to display user feedback. This means we'll be catching errors and throwing new ones.
-       *
-       *  Errors thrown from our resource will be captured and returned from our resolvers.
-       *
-       *  This will be the basic logic for this resource method:
-       *  1) Query for the user using the given id. If no user is found throw an error.
-       *  2) If there is an error with the query (500) throw an error.
-       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
-       *     -- this is important, don't return the password!
-       *
-       *  You'll need to complete the query first before attempting this exercise.
-       */
-
       const findUserQuery = {
         text: `SELECT * FROM users WHERE users.id = $1`,
         values: [id]
       };
-
-      /**
-       *  Refactor the following code using the error handling logic described above.
-       *  When you're done here, ensure all of the resource methods in this file
-       *  include a try catch, and throw appropriate errors.
-       *
-       *  Here is an example throw statement: throw 'User was not found.'
-       *  Customize your throw statements so the message can be used by the client.
-       */
-
-      const user = await postgres.query(findUserQuery);
-      return user;
-      // -------------------------------
+      try {
+        const user = await postgres.query(findUserQuery);
+        return user.rows[0];
+      } catch (error) {
+        throw 'User was not found.';
+      }
     },
-    async getItems(idToOmit) {
+
+    async getItems(filter) {
       const items = await postgres.query({
-        text: `SELECT item.id, item.title, item.description, item.created, item.ownerid,item.borrowerid, upload.data as imageurl
-        FROM items item
-        LEFT JOIN uploads upload
-        ON upload.itemid = item.id             
-        WHERE (item.ownerid != $1 AND item.borrowerid IS NULL) OR ($1 IS NULL)`,
-        values: idToOmit ? [idToOmit] : []
+        text: `SELECT *
+        FROM items          
+        WHERE items.ownerid <> $1 AND items.borrowerid IS NULL`,
+        values: filter ? [filter] : []
       });
+
       return items.rows;
     },
+    
     async getItemsForUser(id) {
-      const items = await postgres.query({
-        text: `SELECT item.id, item.title, item.description, item.created, item.ownerid,item.borrowerid, upload.data as imageurl
-        FROM items item
-        LEFT JOIN uploads upload
-        ON upload.itemid = item.id
-        WHERE item.ownerid = $1`,
-        values: [id]
-      });
-      return items.rows;
+      try {
+        const items = await postgres.query({
+          text: `SELECT *
+          FROM items WHERE ownerid = $1`,
+          values: [id]
+        });
+        return items.rows;
+
+      }catch (error) {
+        throw 'Items for user were not found.';
+      }    
     },
     async getBorrowedItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT item.id, item.title, item.description, item.created, item.ownerid,item.borrowerid, upload.data as imageurl
-        FROM items item
-        LEFT JOIN uploads upload
-        ON upload.itemid = item.id
-        WHERE item.borrowerid = $1`,
+        text: ``,
         values: [id]
       });
       return items.rows;
@@ -129,12 +101,7 @@ module.exports = (postgres) => {
     },
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: `SELECT tags.title, tags.id FROM tags
-        JOIN itemtags
-        ON itemtags.tagid = tags.id
-        JOIN items
-        ON itemtags.itemid = items.id
-        WHERE items.id = $1`,
+        text: ``,
         values: [id]
       };
 
