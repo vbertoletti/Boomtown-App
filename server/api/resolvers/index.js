@@ -53,70 +53,69 @@ module.exports = (app) => {
         }
       },
       async items(parent, {filter}, {pgResource}, info) {
-        return pgResource.getItems(filter);
+        try {
+          const items = await pgResource.getItems(filter);
+          return items
+        } catch (e) {
+          throw new ApolloError(e);
+        }       
       },
       async tags(parent, {title}, {pgResource}, info) {
-        return pgResource.getTags();
+        try {
+          const tags = await pgResource.getTags();
+          return tags
+        } catch (e) {
+          throw new ApolloError(e);
+        }        
       }
     },
 
     User: {
-      /**
-       *  @TODO: Advanced resolvers
-       *
-       *  The User GraphQL type has two fields that are not present in the
-       *  user table in Postgres: items and borrowed.
-       *
-       *  According to our GraphQL schema, these fields should return a list of
-       *  Items (GraphQL type) the user has lent (items) and borrowed (borrowed).
-       *
-       */
-  
-      items() {
-      // @TODO: Replace this mock return statement with the correct items from Postgres
-      return []
-     
+      async items(user, _, { pgResource }) {
+        try {
+          const itemsUser = await pgResource.getItemsForUser(user.id);
+          return itemsUser
+        } catch (e) {
+          throw new ApolloError(e)
+        }
       },
-      borrowed() {
-      // @TODO: Replace this mock return statement with the correct items from Postgres
-      return []
-    
+      
+      async borrowed(user, _, { pgResource }) {
+        try {
+          const borrowedUser = await pgResource.getBorrowedItemsForUser(user.id);
+          return borrowedUser
+        } catch (e) {
+          throw new ApolloError(e)
+        }
       }
     },
 
     Item: {
-      /**
-       *  @TODO: Advanced resolvers
-       *
-       *  The Item GraphQL type has two fields that are not present in the
-       *  Items table in Postgres: itemowner, tags and borrower.
-       *
-       * According to our GraphQL schema, the itemowner and borrower should return
-       * a User (GraphQL type) and tags should return a list of Tags (GraphQL type)
-       *
-       */
-      // @TODO: Uncomment these lines after you define the Item type with these fields
-      async itemowner() {
-      // @TODO: Replace this mock return statement with the correct user from Postgres
-      return {
-          id: 29,
-          fullname: "Mock user",
-          email: "mock@user.com",
-          bio: "Mock user. Remove me."
-      }
+      async itemowner(user, _, { pgResource}) {
+        try {
+          const itemOwner = await pgResource.getUserById(user.ownerid);
+          return itemOwner
+        } catch (e) {
+          throw new ApolloError(e)
+        }
     },
-      async tags() {
-        // @TODO: Replace this mock return statement with the correct tags for the queried Item from Postgres
-        return []
-        // -------------------------------
+
+      async tags(user, _, { pgResource}) {
+        try {
+          const tagsItem = await pgResource.getTagsForItem(user.id)
+          return tagsItem
+        } catch (e) {
+          throw new ApolloError(e)
+        }
       },
-      async borrower() {
-        /**
-         * @TODO: Replace this mock return statement with the correct user from Postgres
-         * or null in the case where the item has not been borrowed.
-         */
-        return null
-        // -------------------------------
+
+      async borrower(user, _, { pgResource}) {
+        try {
+          const borrowerItem = await pgResource.getUserById(user.borrowerid);
+          return borrowerItem
+        } catch (e) {
+          throw new ApolloError(e)
+        }
       },
       // async imageurl({ imageurl, imageid, mimetype, data }) {
       //   if (imageurl) return imageurl
@@ -124,7 +123,6 @@ module.exports = (app) => {
       //     return `data:${mimetype};base64, ${data}`
       //   }
       // }
-      // -------------------------------
     },
 
     Mutation: {

@@ -22,7 +22,7 @@ module.exports = gql`
     description: String!
     itemowner: User!
     tags: [Tag]
-    created: Date!
+    date: Date!
     borrower: User
   }
 

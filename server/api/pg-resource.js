@@ -21,7 +21,7 @@ module.exports = (postgres) => {
   return {
     async createUser({ email, fullname, bio, password }) {
       const newUserInsert = {
-        text: 'INSERT INTO users (email, fullname, bio, password )', 
+        text: 'INSERT INTO users (email, fullname, bio, password) VALUES($1,$2,$3) RETURNING *', 
         values: [email, fullname, bio, password]
       };
       try {
@@ -40,7 +40,7 @@ module.exports = (postgres) => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: 'SELECT * FROM users WHERE users.email=$1',
+        text: 'SELECT fullname, email, password FROM users WHERE users.email=$1',
         values: [email]
       };
       try {
@@ -53,28 +53,31 @@ module.exports = (postgres) => {
     },
     async getUserById(id) {
       const findUserQuery = {
-        text: `SELECT * FROM users WHERE users.id = $1`,
+        text: `SELECT id, email, fullname, bio FROM users WHERE users.id = $1`,
         values: [id]
       };
       try {
         const user = await postgres.query(findUserQuery);
         return user.rows[0];
-      } catch (error) {
+      } catch (e) {
         throw 'User was not found.';
       }
     },
 
     async getItems(filter) {
-      const items = await postgres.query({
-        text: `SELECT *
-        FROM items          
-        WHERE items.ownerid <> $1 AND items.borrowerid IS NULL`,
-        values: filter ? [filter] : []
-      });
-
-      return items.rows;
-    },
-    
+      try {
+        const items = await postgres.query({
+          text: `SELECT *
+          FROM items          
+          WHERE items.ownerid <> $1 AND items.borrowerid IS NULL`,
+          values: filter ? [filter] : []
+        });
+        return items.rows;
+      } catch (e) {
+        throw 'Items were not found.';
+        }
+      },
+      
     async getItemsForUser(id) {
       try {
         const items = await postgres.query({
@@ -84,13 +87,14 @@ module.exports = (postgres) => {
         });
         return items.rows;
 
-      }catch (error) {
+      }catch (e) {
         throw 'Items for user were not found.';
       }    
     },
     async getBorrowedItemsForUser(id) {
       const items = await postgres.query({
-        text: ``,
+        text: `SELECT *
+        FROM items WHERE borrowerid = $1 `,
         values: [id]
       });
       return items.rows;
