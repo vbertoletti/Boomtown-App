@@ -88,30 +88,47 @@ module.exports = (postgres) => {
         return items.rows;
 
       }catch (e) {
-        throw 'Items for user were not found.';
+        throw 'Items were not found.';
       }    
     },
+    
     async getBorrowedItemsForUser(id) {
-      const items = await postgres.query({
-        text: `SELECT *
-        FROM items WHERE borrowerid = $1 `,
-        values: [id]
-      });
-      return items.rows;
+      try {
+        const items = await postgres.query({
+          text: `SELECT *
+          FROM items WHERE borrowerid = $1 `,
+          values: [id]
+        });
+        return items.rows;
+      } catch (e) {
+        throw 'Items not found.'
+      }
     },
+
     async getTags() {
-      const tags = await postgres.query(`SELECT * FROM tags`);
-      return tags.rows;
+      try {
+        const tags = await postgres.query({
+          text: `SELECT * FROM tags`
+        });
+        return tags.rows;
+      } catch (e) {
+        throw 'Tags were not found.'
+      }      
     },
+
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: ``,
+        text: `SELECT tags.id, tags.title FROM itemtags INNER JOIN  tags ON (itemtags.tagid = tags.id) WHERE itemtags.itemid = $1`,
         values: [id]
       };
-
-      const tags = await postgres.query(tagsQuery);
-      return tags.rows;
+      try {
+        const tags = await postgres.query(tagsQuery);
+        return tags.rows;
+      } catch (e) {
+        throw 'Tags were not found.';
+      }
     },
+
     async saveNewItem({ item, image, user }) {
       /**
        *  @TODO: Adding a New Item
