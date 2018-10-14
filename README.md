@@ -1,4 +1,14 @@
-# Boomtown 🏙
+# About Boomtown 🏙
+
+A item sharing, full stack application. 
+
+## Backend Technologies Used
+
+- PostgresQL, also using Postico as GUI;
+- GraphQL
+- Node.js
+- Express
+- Apollo
 
 ## Server
 

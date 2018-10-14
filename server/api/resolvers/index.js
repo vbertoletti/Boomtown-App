@@ -62,7 +62,7 @@ module.exports = (app) => {
       },
       async tags(parent, {title}, {pgResource}, info) {
         try {
-          const tags = await pgResource.getTags();
+          const tags = await pgResource.getTags(title);
           return tags
         } catch (e) {
           throw new ApolloError(e);
@@ -91,7 +91,7 @@ module.exports = (app) => {
     },
 
     Item: {
-      async itemowner(user, _, { pgResource}) {
+      async itemowner(user, _, { pgResource }) {
         try {
           const itemOwner = await pgResource.getUserById(user.ownerid);
           return itemOwner
@@ -100,7 +100,7 @@ module.exports = (app) => {
         }
     },
 
-      async tags(user, _, { pgResource}) {
+      async tags(user, _, { pgResource }) {
         try {
           const tagsItem = await pgResource.getTagsForItem(user.id)
           return tagsItem
@@ -109,7 +109,7 @@ module.exports = (app) => {
         }
       },
 
-      async borrower(user, _, { pgResource}) {
+      async borrower(user, _, { pgResource }) {
         try {
           const borrowerItem = await pgResource.getUserById(user.borrowerid);
           return borrowerItem
