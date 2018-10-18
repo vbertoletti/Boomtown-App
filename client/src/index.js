@@ -55,20 +55,22 @@ import client from './apollo'
  */
 
 // @TODO: Remove this import once you have your router working below
-import Items from './pages/Items';
+import Layout from './routes/Layout';
+import {BrowserRouter as Router} from 'react-router-dom';
 // -------------------------------
 
 import './index.css';
-// import Items from './pages/Items/Items';
 
 const App = () => {
   return (
-    <MuiThemeProvider theme={theme}> 
-      <ApolloProvider client={client}>
-        <CssBaseline />
-        <Items />
-      </ApolloProvider>
-    </MuiThemeProvider>
+    <Router>
+      <MuiThemeProvider theme={theme}> 
+        <ApolloProvider client={client}>
+          <CssBaseline />
+          <Layout />
+        </ApolloProvider>
+      </MuiThemeProvider>
+    </Router>
   );
 };
 

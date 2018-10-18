@@ -4,18 +4,10 @@ import { Query } from "react-apollo";
 import Items from './Items';
 import { ALL_ITEMS_QUERY } from '../../apollo/queries';
 
-// const GET_ITEMS = gql`{
-//   items(filter: 1) {
-//     id
-//     title
-//     description
-//   }
-// }`;
-
 class ItemsContainer extends Component {
   render() {
     return(
-      <Query query={ALL_ITEMS_QUERY} variables={{ filter: 1}}>
+      <Query query={ALL_ITEMS_QUERY} variables={{filter: 1}} >
       {
         ({loading, error, data}) => 
         {
