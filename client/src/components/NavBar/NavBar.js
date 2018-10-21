@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import BoomtownLogo from './../../images/boomtown.svg';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/icons/AddCircle'
 
 
 class NavBar extends Component {
@@ -27,7 +29,10 @@ class NavBar extends Component {
                 </Link>
                 <div>
                 <Link to="/share">
-                  SHARE SOMETHING
+                  <Button to= '/share'>
+                    <Icon style={{ margin: '10px' }} /> 
+                      SHARE SOMETHING
+                  </Button>
                 </Link>
                 </div>
               </Toolbar>
