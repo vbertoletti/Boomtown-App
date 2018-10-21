@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ShareForm extends Component {
+class ShareItemForm extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -15,4 +15,4 @@ class ShareForm extends Component {
   }
 }
 
-export default ShareForm;
+export default ShareItemForm;

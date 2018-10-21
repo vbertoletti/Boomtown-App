@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Items from './Items';
 import { ALL_ITEMS_QUERY } from '../../apollo/queries';

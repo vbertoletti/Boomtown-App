@@ -3,11 +3,11 @@ import React from 'react';
 
 import styles from './styles';
 
-const Profile = ({ classes }) => {
+const Profile = ({ classes, data }) => {
   return (
     <div>
       <p>
-        This is the profile page located at <code>/profile/:userId</code>.
+        profile hello
       </p>
     </div>
   );
