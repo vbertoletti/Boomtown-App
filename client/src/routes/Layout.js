@@ -8,18 +8,16 @@ import NavBar from '../components/NavBar'
 
 export default () => (
   <Fragment>
-
     <NavBar /> 
-
-    <Switch>
-        <Route exact path="/welcome" component = {Home} />
-        <Route exact path="/items" component = {Items} />
-        <Route exact path="/profile/:userid" component = {Profile} />
-        <Route exact path="/share" component = {Share} />
-        {/* <Route component = {Items} /> */}
-        <Redirect to="/welcome" />
-        <Route path="*" component = {Items} />
-    </Switch>
+      <Switch>
+          <Route exact path="/welcome" component = {Home} />
+          <Route exact path="/items" component = {Items} />
+          <Route exact path="/profile/:userid" component = {Profile} />
+          <Route exact path="/share" component = {Share} />
+          {/* <Route component = {Items} /> */}
+          <Redirect to="/welcome" />
+          <Route path="*" component = {Items} />
+      </Switch>
   </Fragment>
 );
 

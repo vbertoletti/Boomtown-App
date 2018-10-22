@@ -6,10 +6,9 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
+// import { Form, Field } from 'react-final-form';
 /**
  * @TODO: Uncomment the following lines when authentication is added to the form
- *
- * import { Form, Field } from 'react-final-form'
  *
  * import {
  *    LOGIN_MUTATION,
