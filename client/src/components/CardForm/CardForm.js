@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import styles from './styles';
 
+
 const CardForm = ({ classes  }) => {
 
     return (
@@ -35,7 +36,9 @@ const CardForm = ({ classes  }) => {
           </Typography>
 
           <Typography className={classes.userInput}>Name your item</Typography>
-          <Typography className={classes.DescribeInput}>itemsss</Typography>
+          <Typography className={classes.DescribeInput}>
+            item description
+          </Typography>
         </CardContent>
       </Card>
     );
@@ -47,3 +50,4 @@ CardForm.propTypes = {
 };
 
 export default withStyles(styles)(CardForm);
+

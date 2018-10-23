@@ -1,12 +1,11 @@
 const styles = theme => ({
-  sharepage: {
-    display: "flex",
-    flexDirection: "row-reverse",
-    justifyContent: "space-around",
-    marginTop: "200px"
-    
+  Share: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '80vw',
+    margin: '10rem auto'
   }
 });
 
 export default styles;
-

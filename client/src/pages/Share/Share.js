@@ -1,15 +1,19 @@
 import { withStyles } from '@material-ui/core/styles';
 import React from 'react';
-import styles from '../Share/styles';
-import  ShareItemForm  from '../../components/ShareItemForm/ShareItemForm';
-// import Grid from '@material-ui/core/Grid';
-import CardForm from '../../components/CardForm/CardForm'
+import ShareItemForm from '../../components/ShareItemForm';
+import CardForm from '../../components/CardForm/CardForm';
 
-const Share = ({ classes  }) => {
+import styles from './styles';
+
+const Share = ({ classes, tags }) => {
   return (
-    <div className={classes.sharepage}>
-        <ShareItemForm />
+    <div className={classes.Share}>
+      <div className={classes.Card}>
         <CardForm />
+      </div>
+      <div className={classes.Form}>
+        <ShareItemForm tags={tags} />
+      </div>
     </div>
   );
 };
