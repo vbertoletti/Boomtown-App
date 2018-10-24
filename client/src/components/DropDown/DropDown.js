@@ -7,18 +7,16 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
 // import styles from "../DropDown/styles";
 
-
 const options = [
-    { option: 'Your Profile', path: "/profile/1" },
-    { option: 'Sign Out', path: "/welcome" }
+  { option: 'Your Profile', path: '/profile/1' },
+  { option: 'Sign Out', path: '/welcome' }
 ];
 
 const ITEM_HEIGHT = 50;
 
 class LongMenu extends React.Component {
-
   state = {
-    anchorEl: null,
+    anchorEl: null
   };
 
   handleClick = event => {
@@ -51,12 +49,15 @@ class LongMenu extends React.Component {
           PaperProps={{
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,
-              width: 200,
-            },
+              width: 200
+            }
           }}
         >
           {options.map(o => (
-            <MenuItem key={o} selected={o === 'Pyxis'} onClick={this.handleClose}>
+            <MenuItem
+              key={o}
+              onClick={this.handleClose}
+            >
               <Link to={o.path}>
                 {o.option}
               </Link>
@@ -68,4 +69,4 @@ class LongMenu extends React.Component {
   }
 }
 
-export default (LongMenu);
+export default LongMenu;

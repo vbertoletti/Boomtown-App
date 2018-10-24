@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 const ItemFields = gql`
   fragment ItemFields on Item { 
     
-    id
+    id 
     title
     imageurl
     description

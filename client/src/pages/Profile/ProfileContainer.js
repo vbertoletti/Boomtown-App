@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Profile from './Profile';
 import { ALL_USER_ITEMS_QUERY } from '../../apollo/queries';

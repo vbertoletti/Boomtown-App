@@ -4,12 +4,13 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ApolloProvider } from 'react-apollo'
 // import { BrowserRouter } from 'react-router-dom';
-// import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 // -------------------------------
 
 import registerServiceWorker from './registerServiceWorker';
 import theme from './theme';
 import client from './apollo'
+import store from './redux';
 
 /**
  * @TODO: Initialize Apollo Client
@@ -36,7 +37,7 @@ import client from './apollo'
  *
  * Uncomment the following line when your Redux store is configured
  *
- * import store from './redux'
+ * 
  *
  * Below in your <App />, wrap a <ReduxProvider /> component around all
  * of the app's children, and pass it the imported `store` as the `store`
@@ -56,20 +57,21 @@ import client from './apollo'
 // @TODO: Remove this import once you have your router working below
 import Layout from './routes/Layout';
 import {BrowserRouter as Router} from 'react-router-dom';
-// -------------------------------
 
 import './index.css';
 
 const App = () => {
   return (
-    <Router>
-      <MuiThemeProvider theme={theme}> 
-        <ApolloProvider client={client}>
-          <CssBaseline />
-          <Layout />
-        </ApolloProvider>
-      </MuiThemeProvider>
-    </Router>
+      <ReduxProvider store={store}>
+        <MuiThemeProvider theme={theme}> 
+          <ApolloProvider client={client}>
+            <CssBaseline />
+            <Router>
+              <Layout />
+            </Router>
+          </ApolloProvider>
+        </MuiThemeProvider>
+      </ReduxProvider>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Field } from 'react-final-form';
+import { Form, Field, FormSpy } from 'react-final-form';
 import styles from './styles';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -7,82 +7,191 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import { UpdateNewItem, ResetNewItem, ResetNewItemImage } from './../../redux/modules/shareItemPreview';
+import { Checkbox, ListItemText } from '@material-ui/core';
+import Input from "@material-ui/core/Input";
 
-class ShareItemForm extends Component {
-  constructor(props) {
-    super(props);
+class ShareItemForm extends React.Component {
+
+  constructor() {
+    super();
+    this.fileInput = React.createRef()
     this.state = {
-      tags: 'Add Tag',
+      fileSelected: '',
+      done: false,
+      selectedTags: [],
+
     };
+    
   }
 
-  submitTheForm(e, form) {
-    console.log('submitting!', form.getState().values);
-    //fire mutation with form values
-    !form.valid && form.reset();
+  generateTagsText(tags, selected) {
+    return tags
+      .map(t => (selected.indexOf(t.id) > -1 ? t.title : false))
+      .filter(e => e)
+      .join(', ');
   }
+
+  getBase64Url() {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        resolve(
+          `data:${this.state.fileSelected.type};base64, ${btoa(
+            e.target.result
+          )}`
+        );
+      };
+      reader.readAsBinaryString(this.state.fileSelected);
+    });
+  }
+  
+  applyTags(tags) {
+    return (
+      tags &&
+      tags
+        .filter(t => this.state.selectedTags.indexOf(t.id) > -1)
+        .map(t => ({ title: t.title, id: t.id }))
+    );
+  }
+
+  dispatchUpdate(values, tags, updateNewItem) {
+    if (!values.imageurl && this.state.fileSelected) {
+      this.getBase64Url().then(imageurl => {
+        updateNewItem({
+          imageurl
+        });
+      });
+    }
+    updateNewItem({
+      ...values,
+      tags: this.applyTags(tags)
+    });
+  }
+
+  handleSelectTag(event) {
+    this.setState({selectedTags: event.target.value})
+
+  }
+
+  handleSelectFile(event) {
+    this.setState({fileSelected: this.fileInput.current.files[0]})
+
+  }
+  
 
   render() {
-    const { classes, tags } = this.props;
+    const { classes, tags, updateNewItem } = this.props;
     return (
+      
       <div className={this.props.classes.root}>
         <Typography component="h1" variant="h1" className={classes.heading}>
           Share. Borrow.<br></br> Prosper.
         </Typography>
         <Form
           onSubmit={(e, form) => this.submitTheForm(e, form)}
-          render={({ handleSubmit }) => (
-            <form onSubmit={e => handleSubmit(e)}>
+          render={({ handleSubmit, pristine, invalid }) => (
+            <form>
+            <FormSpy
+              subscription={{ values: true }}
+              component={({ values }) => {
+                if (values) {
+                  this.dispatchUpdate(values, tags, updateNewItem);
+                }
+                return '';
+              }}
+            />
               <fieldset className={classes.form}>
-                <Button className={classes.shareImage}
-                  id="submit"
-                  type="submit"
-                  variant="contained"
-                  color="primary"
+                <Field 
+                name='imageurl'
+                render={({ input, meta }) => (
+                  <React.Fragment>
+                    {
+                      !this.state.fileSelected ? (
+                        <Button onClick={() => this.fileInput.current.click()}>
+                          <Typography>
+                            Select Image 
+                          </Typography>
+                        </Button>
+                      ) : (
+                        <Button onClick={() => this.resetFileInput()}>
+                          <Typography>
+                            Reset Image
+                          </Typography>
+                        </Button>
+                      )
+                    }
+                  <input 
+                    type='file'
+                    accept='image/*'
+                    ref={this.fileInput}
+                    hidden
+                    onChange={event => this.handleSelectFile(event)}
+
+                  />
+                  </React.Fragment>
+
+                )}
+                className={classes.shareImage}
                 >
-                  SELECT IMAGE
-                </Button>
-                <label htmlFor="item-name">
+               
+                </Field>
+
+
+             
                   <Field
-                    name="item name"
+                    name="title"
                     render={({ input, meta }) => (
                       <TextField
+                        inputProps = {{...input}}
+                        label="name your item"
                         className={classes.itemName}
-                        name="itemName"
-                        type="text"
+                        multiple
+                        rowsMax="4"
                         placeholder="Name your item"
-                        {...input}
                       />
                     )}
                   />
-                </label>
-                <label htmlFor="item-description">
+                
+               
                   <Field
-                    name="item-description"
+                    name="description"
                     render={({ input, meta }) => (
-                      <TextField
+                      <Input
+                        inputProps = {{...input}}
                         className={classes.itemDescription}
-                        name="itemDescription"
                         type="text"
                         placeholder="Describe your item"
                         {...input}
                       />
                     )}
                   />
-                </label>
+          
                 <Field
-                  name="addTag"
+                  name="tags"
                   render={({ input, meta }) => (
                     <Select
-
-                      inputProps={{
-                        name: 'tags',
-                        id: 'add-tag'
+                      multiple
+                      id="select-tags"
+                      renderValue={(selectedTags) => {
+                        return this.generateTagsText(tags, selectedTags)
                       }}
+                      value={this.state.selectedTags}
+                      label="Tag your items"
+                      className={classes.lala}
+                      onChange={event => this.handleSelectTag(event)}
                     >
-                      {tags.map(tag => (
-                        <MenuItem key={tag.id} value={tag.title}>
-                          {tag.title}
+                      
+                     
+                        {tags.map(tag => (
+                          <MenuItem 
+                             key={tag.id} 
+                             value={tag.id}
+                           >
+                          <Checkbox checked={this.state.selectedTags.indexOf(tag.id) > -1} />
+                          <ListItemText primary={tag.title} />
+
                         </MenuItem>
                       ))}
                     </Select>
@@ -91,8 +200,6 @@ class ShareItemForm extends Component {
               </fieldset>
               <fieldset className={classes.shareFieldset}>
                 <Button className={classes.shareButton}
-                  id="submit"
-                  type="submit"
                   variant="contained"
                 >
                   SHARE
@@ -104,6 +211,18 @@ class ShareItemForm extends Component {
       </div>
     );
   }
-}
+};
 
-export default withStyles(styles)(ShareItemForm);
+const mapDispatchToProps = (dispatch) => ({
+  updateNewItem(item) {
+    dispatch(UpdateNewItem(item));
+  },
+  resetNewItem() {
+    dispatch(ResetNewItem());
+  },
+  resetNewItemImage() {
+    dispatch(ResetNewItemImage());
+  }
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(ShareItemForm));

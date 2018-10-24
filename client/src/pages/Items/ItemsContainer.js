@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Items from './Items';
 import { 
@@ -9,7 +8,7 @@ import {
 class ItemsContainer extends Component {
   render() {
     return(
-      <Query query={ALL_ITEMS_QUERY} variables={{filter: -1}} >
+      <Query query={ALL_ITEMS_QUERY} variables={{filter: 1}} >
       {
         ({loading, error, data}) => 
         {

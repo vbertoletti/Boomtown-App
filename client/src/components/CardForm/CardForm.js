@@ -7,38 +7,53 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import styles from './styles';
+import Button from '@material-ui/core/Button';
 
-
-const CardForm = ({ classes  }) => {
-
+const CardForm = ({ classes, item }) => {
+  console.log(item);
     return (
       <Card className={classes.card}>
         <CardMedia
+          component="img"
           className={classes.media}
-          image=""
+          src = {item.imageurl}
           title="Item's title"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            <div className={classes.row}>
+            <div className={classes.cardUserInfoContainer}>
               <Avatar
-                src="../../images/boomtown.svg"
-                alt="Boomtown Logo"
+                // src={logo}
+                alt="user's avatar"
                 className={classes.avatar}
               />
-              <div className={classes.userContainer}>
+              <div className={classes.userInfoWrapper}>
                 <p className={classes.user}>
-                  Vanessa <br />
-                  <span>time posted</span>
+                  { item.itemowner.fullname } <br />
+                  <span>
+                  { item.title }
+                  </span>
                 </p>
               </div>
             </div>
           </Typography>
 
-          <Typography className={classes.userInput}>Name your item</Typography>
-          <Typography className={classes.DescribeInput}>
-            item description
+          <Typography className={classes.itemNamePreview}>
+            { item.title }
           </Typography>
+          <Typography className={classes.itemTagsPreview}>
+            { item.tags.map(tag => (<p>{tag.title}</p>) )}
+          </Typography>
+          <Typography className={classes.itemDescriptionPreview}>
+          { item.description }
+          </Typography>
+          <Button className={classes.previewButton}
+            id="sharesubmit"
+            type="submit"
+            variant="contained"
+            >
+            BORROW
+          </Button>
         </CardContent>
       </Card>
     );

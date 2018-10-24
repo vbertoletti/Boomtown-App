@@ -7,8 +7,8 @@ import Home from '../pages/Home';
 import NavBar from '../components/NavBar'
 
 export default () => (
-  <Fragment>
-    <NavBar /> 
+  <Fragment>   
+     <NavBar /> 
       <Switch>
           <Route exact path="/welcome" component = {Home} />
           <Route exact path="/items" component = {Items} />

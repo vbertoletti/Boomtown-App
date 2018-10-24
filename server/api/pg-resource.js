@@ -69,7 +69,7 @@ module.exports = (postgres) => {
       const items = await postgres.query({
         text: `SELECT *
         FROM items          
-        WHERE ownerid <> $1 AND borrowerid IS NULL`,
+        WHERE ownerid <> $1 AND borrowerid <> $1 OR borrowerid IS NULL`,
         values: filter ? [filter] : []
       });
       try {

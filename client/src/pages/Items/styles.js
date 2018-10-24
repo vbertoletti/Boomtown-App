@@ -2,8 +2,9 @@ const styles = theme => ({
   cardwrapper: {
     display: "flex",
     justifyContent: 'space-around',
-    width: "80vw",
+    width: "90vw",
     margin: "50px auto",
+    flexWrap: "wrap"
   
   },
 

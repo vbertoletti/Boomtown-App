@@ -11,7 +11,7 @@ import LongMenu from '../DropDown/index';
 
 const NavBar = (props) => {
   return (
-    props.location.pathname !== '/welcome' && (
+    
       <div>
         <AppBar
           position="static"
@@ -65,7 +65,7 @@ const NavBar = (props) => {
           </Toolbar>
         </AppBar>
       </div>
-    )
+    
   );
 }
 
