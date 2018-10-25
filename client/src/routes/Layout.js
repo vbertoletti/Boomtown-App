@@ -4,7 +4,7 @@ import Items from '../pages/Items';
 import Profile from '../pages/Profile';
 import Share from '../pages/Share';
 import Home from '../pages/Home';
-import NavBar from '../components/NavBar'
+import NavBar from '../components/NavBar';
 
 export default () => (
   <Fragment>   

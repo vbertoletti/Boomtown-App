@@ -3,7 +3,6 @@ import Cardform from '../CardForm/CardForm';
 import { connect } from 'react-redux';
 
 const ShareItemPreview = ({ shareItemPreview }) => {
-console.log("******",shareItemPreview)
   return <Cardform item={shareItemPreview}/>;
   
 };
