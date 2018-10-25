@@ -53,6 +53,14 @@ module.exports = gql`
     tags: [AssignedTag]!
   }
 
+  input NewUserInput {
+    email: String!
+    fullname: String!
+    bio: String
+    password: String!
+    
+  }
+
   type Query {
     user(id: ID!): User
     viewer: User
@@ -65,5 +73,13 @@ module.exports = gql`
       item: NewItemInput!,
       image: Upload
       ): Item
+    signup (
+      user: NewUserInput!
+    ): User
+    login (
+      email: String!
+      password: String!
+    ): User
+    logout: Boolean
   }
 `;

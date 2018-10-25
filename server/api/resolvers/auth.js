@@ -36,7 +36,6 @@ function generateToken(user, secret) {
    */
   // Refactor this return statement to return the cryptographic hash (the Token)
   return '';
-  // -------------------------------
 }
 
 module.exports = (app) => {
@@ -55,7 +54,6 @@ module.exports = (app) => {
          */
         // @TODO: Use bcrypt to generate a cryptographic hash to conceal the user's password before storing it.
         const hashedPassword = '';
-        // -------------------------------
 
         const user = await context.pgResource.createUser({
           fullname: args.user.fullname,

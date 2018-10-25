@@ -21,7 +21,7 @@ module.exports = (postgres) => {
   return {
     async createUser({ email, fullname, bio, password }) {
       const newUserInsert = {
-        text: 'INSERT INTO users (email, fullname, bio, password) VALUES($1,$2,$3) RETURNING *', 
+        text: 'INSERT INTO users (email, fullname, bio, password) VALUES($1,$2,$3,$4) RETURNING *', 
         values: [email, fullname, bio, password]
       };
       try {
