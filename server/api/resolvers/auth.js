@@ -16,17 +16,6 @@ function generateToken(user, secret) {
   return jwt.sign({id, email, fullname, bio}, secret, {
     expiresIn: '2h'
   });
-
-  // const token = jwt.sign({
-  //   id: id,
-  //   email: email,
-  //   fullname: fullname,
-  //   bio: bio
-  // },
-  //   secret
-  // );
-
-  // return token;
 }
 
 module.exports = (app) => {

@@ -6,19 +6,14 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
-// import { Form, Field } from 'react-final-form';
-/**
- * @TODO: Uncomment the following lines when authentication is added to the form
- *
- * import {
- *    LOGIN_MUTATION,
- *    SIGNUP_MUTATION,
- *    VIEWER_QUERY
- * } from '../../apollo/queries';
- * import { graphql, compose } from 'react-apollo';
- * import validate from './helpers/validation'
- */
-
+import { Form, Field } from 'react-final-form';
+import {
+  LOGIN_MUTATION,
+  SIGNUP_MUTATION,
+  VIEWER_QUERY
+} from '../../apollo/queries';
+import { graphql, compose } from 'react-apollo';
+import validate from './helpers/validation'
 import styles from './styles';
 
 class AccountForm extends Component {
@@ -33,13 +28,17 @@ class AccountForm extends Component {
     const { classes } = this.props;
 
     return (
-      // @TODO: Wrap in Final Form <Form />
-      <form
-        onSubmit={() => {
-          console.log('Submitted');
+      <Form
+        onSubmit={(values) => {
+          const user = { variables: {user: values}};
+          this.state.formToggle
+          ? LOGIN_MUTATION(user).catch(error => this.setState({ error }))
+          : SIGNUP_MUTATION(user).catch(error => this.setState({error}));
+          
         }}
-        className={classes.accountForm}
-      >
+        validate={validate.bind(this)}
+        render={({ handleSubmit, pristine, invalid, submitting, form }) => (
+        <form onSubmit={handleSubmit} className={classes.accountForm}>
         {!this.state.formToggle && (
           <FormControl fullWidth className={classes.formControl}>
             <InputLabel htmlFor="fullname">Username</InputLabel>
@@ -122,11 +121,30 @@ class AccountForm extends Component {
           {/* @TODO: Display sign-up and login errors */}
         </Typography>
       </form>
-      // @TODO: Close Final Form <Form />
+    )}
+    />
     );
   }
 }
 
-// @TODO: Use compose to add the login and signup mutations to this components props.
-// @TODO: Refetch the VIEWER_QUERY to reload the app and access authenticated routes.
-export default withStyles(styles)(AccountForm);
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY,
+  },
+];
+
+export default compose(
+  graphql(SIGNUP_MUTATION, {
+    options: {
+      refetchQueries,
+    },
+    name: 'signupMutation',
+  }),
+  graphql(LOGIN_MUTATION, {
+    options: {
+      refetchQueries,
+    },
+    name: 'loginMutation',
+  }),
+  withStyles(styles),
+)(AccountForm);

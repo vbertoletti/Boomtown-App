@@ -86,27 +86,37 @@ export const ALL_TAGS_QUERY = gql`
  * Auth-related queries and mutations.
  */
 
-// export const VIEWER_QUERY = gql`
-//   query {
-//     # @TODO: Query the id, email, fullname, and bio fields for the viewer.
-//   }
-// `;
+export const VIEWER_QUERY = gql`
+  query {
+  viewer{
+    id
+    fullname
+    email
+  }
+}
+`;
+
 // export const LOGOUT_MUTATION = gql`
 //   mutation {
 //     # @TODO: Run the logout mutation.
 //   }
 // `;
 
-// export const SIGNUP_MUTATION = gql`
-//   mutation signup($user: SignupInput!) {
-//     # @TODO: Pass the user into the signup mutation as an argument
-//     # and return the id of the new user when the mutation is complete.
-//   }
-// `;
+export const SIGNUP_MUTATION = gql`
+  mutation user($user: NewUserInput!) {
+  signup(user: $user) {
+    fullname
+    email
+  }
+}
+`;
 
-// export const LOGIN_MUTATION = gql`
-//   mutation login($user: LoginInput!) {
-//     # @TODO: Pass the user into the login mutation as an argument
-//     # and return the id of the new user when the mutation is complete.
-//   }
-// `;
+export const LOGIN_MUTATION = gql`
+mutation user($id: Login! ) {
+  login(user: $id) {
+    id
+    fullname
+  }
+  
+}
+`;
