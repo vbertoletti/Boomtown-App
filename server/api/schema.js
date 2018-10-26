@@ -61,6 +61,11 @@ module.exports = gql`
     
   }
 
+  input Login {
+    email: String!
+    password: String!
+  }
+
   type Query {
     user(id: ID!): User
     viewer: User
@@ -76,10 +81,7 @@ module.exports = gql`
     signup (
       user: NewUserInput!
     ): User
-    login (
-      email: String!
-      password: String!
-    ): User
+    login (user: Login!): User
     logout: Boolean
   }
 `;

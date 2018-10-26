@@ -29,7 +29,8 @@ module.exports = ({ app, pgResource }) => {
     playground: {
       settings: {
         'editor.theme': 'light',
-        'editor.cursorShape': 'line'
+        'editor.cursorShape': 'line',
+        'request.credentials': 'include'
       }
     },
     context: ({ req }) => {
