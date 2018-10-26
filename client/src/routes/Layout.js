@@ -24,8 +24,8 @@ export default () => (
         } else {
           return (
             <Switch>
+                <Redirect to="/welcome" />
               <Route path="*" component={Items} />
-              <Redirect to="/welcome" />
             </Switch>
           );
         }
