@@ -6,26 +6,7 @@ const path = require('path');
 
 module.exports = (app) => {
   const PORT = process.env.PORT || 8080;
-
-  /**
-   *  @TODO: Configuration Variables
-   *
-   *  As much as possible, configuration information should be defined in a single location, this file.
-   *
-   *  Server applications often need information about their external environment,
-   *  such as the url and credentials of an external database, in order to run.
-   *
-   *  In Express, the 'app' object is a singleton, and we can use the .set method to store
-   *  information on the app object, and use it elsewhere.
-   *
-   *  The main reason for storing configuration information, such as database credentials, in the application's
-   *  'environment' instead of the source code is security. We can use the node global 'process.env' to retrieve
-   *  values from our application's environment. We should also provide a fallback / default.
-   *
-   *  Most server applications will not run unless specific values are part of their environment.
-   *  Boomtown requires the following environment variables:
-   */
-
+  
     app.set('PG_HOST', process.env.PG_HOST || 'localhost')
     app.set('PG_USER', process.env.PG_USER || 'boomtown')
     app.set('PG_PASSWORD', process.env.PG_PASSWORD || 'boomtown')

@@ -25,15 +25,15 @@ class AccountForm extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, loginMutation, signupMutation } = this.props;
 
     return (
       <Form
         onSubmit={(values) => {
           const user = { variables: {user: values}};
           this.state.formToggle
-          ? LOGIN_MUTATION(user).catch(error => this.setState({ error }))
-          : SIGNUP_MUTATION(user).catch(error => this.setState({error}));
+          ? loginMutation(user).catch(error => this.setState({ error }))
+          : signupMutation(user).catch(error => this.setState({error}));
           
         }}
         validate={validate.bind(this)}

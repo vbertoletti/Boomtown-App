@@ -1,68 +1,73 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
+import { Link } from 'react-router-dom';
 import styles from './styles';
-import Button from '@material-ui/core/Button';
+import moment from 'moment';
+import {
+  Button,
+  Typography,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  CardActions
+} from '@material-ui/core';
+import Gravatar from 'react-gravatar';
 
 const CardForm = ({ classes, item }) => {
-  console.log(item);
-    return (
-      <Card className={classes.card}>
-        <CardMedia
-          component="img"
-          className={classes.media}
-          src = {item.imageurl}
-          title="Item's title"
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        component="img"
+        className={classes.media}
+        src={item.imageurl}
+        title="Item's picture"
+      />
+      <Link to={`/profile/${item.itemowner.id}`}>
+        <CardHeader
+          avatar={
+            <Gravatar className={classes.avatar} email={item.itemowner.email} />
+          }
+          title={item.itemowner.fullname}
+          subheader={moment(new Date(item.date)).fromNow()}
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            <div className={classes.cardUserInfoContainer}>
-              <Avatar
-                // src={logo}
-                alt="user's avatar"
-                className={classes.avatar}
-              />
-              <div className={classes.userInfoWrapper}>
-                <p className={classes.user}>
-                  { item.itemowner.fullname } <br />
-                  <span>
-                  { item.title }
-                  </span>
-                </p>
-              </div>
-            </div>
-          </Typography>
+      </Link>
 
-          <Typography className={classes.itemNamePreview}>
-            { item.title }
-          </Typography>
-          <Typography className={classes.itemTagsPreview}>
-            { item.tags.map(tag => (<p>{tag.title}</p>) )}
-          </Typography>
-          <Typography className={classes.itemDescriptionPreview}>
-          { item.description }
-          </Typography>
-          <Button className={classes.previewButton}
-            id="sharesubmit"
-            type="submit"
-            variant="contained"
-            >
-            BORROW
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
+      <CardContent className={classes.cardFormMeta}>
+        <Typography
+          variant="h5"
+          component="h2"
+          className={classes.cardFormTitle}
+        >
+          {item.title}
+        </Typography>
 
+        <Typography className={classes.cardFormTags}>
+          {item.tags.map(tag => tag.title).join(', ')}
+        </Typography>
+
+        <Typography className={classes.cardFormDescription}>
+          {item.description}
+        </Typography>
+      </CardContent>
+
+      <CardActions>
+        <Button
+          className={classes.cardFormButton}
+          id="sharesubmit"
+          type="submit"
+          variant="contained"
+        >
+          BORROW
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
 
 CardForm.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(CardForm);
-

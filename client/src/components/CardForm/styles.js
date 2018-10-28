@@ -1,34 +1,33 @@
 const styles = theme => ({
   card: {
-    width: '400px',
-    height: '450px'
-  }, 
-  cardUserInfoContainer: {
-    display: 'flex',
-    marginBottom: '20px'
-
-  },
-  userInfoWrapper: {
-    marginLeft: '20px'
-  },
-  user: {
-    margin: '0'
-  },
-  itemNamePreview: {
-    fontSize: '25px'
-  },
-  itemDescriptionPreview: {
-    fontSize: '15px'
-  },
-  avatar: {
-    width: '60px',
-    height: '60px'
+    height: '500px'
   },
   media: {
-    height: '200px'
+    height: '250px'
   },
-  previewButton: {
-    marginTop: '20px',
+  avatar: {
+    borderRadius: '50%'
+  },
+  cardFormMeta: {
+    paddingTop: '0'
+  },
+  cardFormTitle: {
+    fontFamily: 'helvetica',
+    fontWeight: '400'
+  },
+  cardFormTags: {
+    color: 'grey',
+    padding: ' 5px 0'
+  },
+  cardFormDescription: {
+    fontSize: '16px'
+  },
+
+  cardFormButton: {
+    background: '0',
+    border: '1px solid grey',
+    borderRadius: '5px',
+    boxShadow: 'none'
   }
 });
 

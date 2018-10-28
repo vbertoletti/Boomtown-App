@@ -9,64 +9,62 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/icons/AddCircle';
 import LongMenu from '../DropDown/index';
 
-const NavBar = (props) => {
+const NavBar = props => {
   return (
-    
-      <div>
-        <AppBar
-          position="static"
+    <div>
+      <AppBar
+        position="static"
+        style={{
+          display: 'flex',
+          position: 'relative',
+          height: '60px'
+        }}
+      >
+        <Toolbar
           style={{
+            margin: '10px',
             display: 'flex',
-            position: 'relative',
-            height: '60px'
+            justifyContent: 'space-between'
           }}
         >
-          <Toolbar
-            style={{
-              margin: '10px',
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}
-          >
-            <Link to="/items">
-              <img
-                src={BoomtownLogo}
-                alt="Company's Logo"
-                style={{
-                  height: '45px',
-                  width: 'auto',
-                  position: 'relative',
-                  bottom: '10px',
-                  right: '25px'
-                }}
-              />
+          <Link to="/items">
+            <img
+              src={BoomtownLogo}
+              alt="Company's Logo"
+              style={{
+                height: '45px',
+                width: 'auto',
+                position: 'relative',
+                bottom: '10px',
+                right: '25px'
+              }}
+            />
+          </Link>
+          <div>
+            <Link
+              to="/share"
+              style={{
+                position: 'relative',
+                bottom: '10px'
+              }}
+            >
+              <Button to="/share">
+                <Icon
+                  style={{
+                    margin: '10px'
+                  }}
+                />
+                SHARE SOMETHING
+              </Button>
+              <Button>
+                <LongMenu />
+              </Button>
             </Link>
-            <div>
-              <Link
-                to="/share"
-                style={{
-                  position: 'relative',
-                  bottom: '10px'
-                }}
-              >
-                <Button to="/share">
-                  <Icon
-                    style={{
-                      margin: '10px'
-                    }}
-                  />
-                  SHARE SOMETHING
-                </Button>
-                <Button>
-                  <LongMenu />
-                </Button>
-              </Link>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-    
+          </div>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
-}
+};
 
 export default withStyles()(withRouter(NavBar));

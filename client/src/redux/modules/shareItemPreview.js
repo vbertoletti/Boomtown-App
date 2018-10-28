@@ -21,7 +21,7 @@ const initialState = {
   title: 'new item',
   description: 'items description',
   date: new Date(),
-  imageurl: 'https://via.placeholder.com/350x150?text=please select an image',
+  imageurl: 'http://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png',
   itemowner: {},
   tags: []
 };

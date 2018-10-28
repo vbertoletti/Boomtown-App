@@ -1,11 +1,6 @@
 const strs = require('stringstream');
 
 function tagsQueryString(tags, itemid, result) {
-  /**
-   * Challenge:
-   * This function is recursive, and a little complicated.
-   * Can you refactor it to be simpler / more readable?
-   */
   const length = tags.length;
   return length === 0
     ? `${result};`

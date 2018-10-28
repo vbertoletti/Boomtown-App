@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import Items from '../pages/Items';
 import Profile from '../pages/Profile';
@@ -8,28 +8,37 @@ import NavBar from '../components/NavBar';
 import { ViewerContext } from '../context/ViewerProvider';
 
 export default () => (
-  <React.Fragment>
-    <NavBar />
-    <ViewerContext.Consumer>
-      {({ viewer, loading }) => {
-        if (viewer) {
-          return (
-            <Switch>
-              <Route exact path="/welcome" component={Home} />
-              <Route exact path="/items" component={Items} />
-              <Route exact path="/profile/:userid" component={Profile} />
-              <Route exact path="/share" component={Share} />
-            </Switch>
-          );
-        } else {
-          return (
-            <Switch>
-                <Redirect to="/welcome" />
-              <Route path="*" component={Items} />
-            </Switch>
-          );
+  <ViewerContext.Consumer>
+    {({ loading, viewer, error }) => {
+      if (loading) return 'Loading...'
+      if (viewer) {
+        return (
+          <Switch>
+            <Route
+             exact path='/welcome' name='home'component={Home}
+            />
+            <Redirect from='*' to='/welcome' />
+          </Switch>
+          )
         }
-      }}
-    </ViewerContext.Consumer>
-  </React.Fragment>
-);
+        return (  
+          <Fragment>
+            <NavBar/>
+          <Switch>
+            <Route  exact path="/items" component={ Items }
+                />
+            <Route  exact path="/share" component={ Share }
+                />
+            <Route  exact path="/profile" component={ Profile }
+                />
+            <Route  exact path="/profile/:userid" component={ Profile }
+                />           
+            <Redirect to="/items" />
+          </Switch>
+          </Fragment>
+        )}}
+  </ViewerContext.Consumer>
+)
+
+
+

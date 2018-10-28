@@ -1,7 +1,4 @@
 import gql from 'graphql-tag';
-/**
- * Item and user-related queries and mutations.
- */
 
 const ItemFields = gql`
   fragment ItemFields on Item { 
@@ -56,10 +53,10 @@ export const ALL_USER_ITEMS_QUERY = gql`
       email
       fullname
       items {
-        ItemFields
+        ...ItemFields
       }
       borrowed {
-        ItemFields
+        ...ItemFields
       }
     }
   }
@@ -75,12 +72,11 @@ export const ALL_TAGS_QUERY = gql`
   }
 `;
 
-// export const ADD_ITEM_MUTATION = gql`
-//   mutation addItem($item: NewItemInput!, $image: Upload!) {
-//     # @TODO: Pass the item and image into the addItem mutation as arguments
-//     # and return the new item id when the mutation is complete.
-//   }
-// `;
+export const ADD_ITEM_MUTATION = gql`
+  mutation addItem($item: NewItemInput!, $image: Upload!) {
+    id
+  }
+`;
 
 /**
  * Auth-related queries and mutations.

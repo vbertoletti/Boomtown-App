@@ -2,6 +2,7 @@ import { withStyles } from '@material-ui/core/styles';
 import React from 'react';  
 import styles from './styles';
 import CardForm from '../../components/CardForm/CardForm';
+import PropTypes from 'prop-types';
 
 const Items = ({ classes, data }) => {
   return (
@@ -19,5 +20,9 @@ const Items = ({ classes, data }) => {
     </div>
   );
 };
+
+Items.propTypes = {
+  classes: PropTypes.object.isRequired
+}
 
 export default withStyles(styles)(Items);
