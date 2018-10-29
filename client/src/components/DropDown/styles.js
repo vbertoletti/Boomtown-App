@@ -1,4 +1,7 @@
 const styles = theme => ({
+  fingerIcon: {
+    paddingRight: '20px'
+  }
 
 });
 

@@ -1,14 +1,21 @@
 # About Boomtown 🏙
 
-A item sharing, full stack application. 
+Boomtown is a a web-app platform that allows people to share and borrow items online, once the users are logged in.
 
-## Backend Technologies Used
+
+## Backend Technologies Used:
 
 - PostgresQL, also using Postico as GUI;
 - GraphQL
 - Node.js
 - Express
 - Apollo
+
+## Frontend Technologies Used: 
+
+- React
+- Redux
+- Apollo Client
 
 ## Server
 

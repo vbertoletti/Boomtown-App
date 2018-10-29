@@ -46,7 +46,7 @@ class DropDown extends Component {
             {({ viewer }) => (
               <Link to={`/profile/${viewer.id}`}>
                 <MenuItem key="Your Profile" onClick={this.handleClose}>
-                  <FingerprintIcon />
+                  <FingerprintIcon className={classes.fingerIcon} />
                   Your Profile
                 </MenuItem>
               </Link>
@@ -55,7 +55,7 @@ class DropDown extends Component {
 
           <Link to="/welcome">
             <MenuItem onBlur={this.handleClose} onClick={logoutMutation}>
-              <PowerSettingsNewIcon />
+              <PowerSettingsNewIcon className={classes.fingerIcon} />
               Sign Out
             </MenuItem>
           </Link>

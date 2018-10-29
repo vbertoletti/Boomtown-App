@@ -18,10 +18,10 @@ export const ResetNewItemImage = ()=> ({
 });
 
 const initialState = {
-  title: 'new item',
-  description: 'items description',
+  title: 'New Item',
+  description: 'Item Description',
   date: new Date(),
-  imageurl: 'http://uetitalia.it/wp-content/uploads/2018/09/blog-placeholder.png',
+  imageurl: 'http://via.placeholder.com/350x250?text=Please select an image',
   itemowner: {},
   tags: []
 };
