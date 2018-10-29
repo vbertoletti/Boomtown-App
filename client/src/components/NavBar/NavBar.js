@@ -7,7 +7,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/icons/AddCircle';
-import LongMenu from '../DropDown/index';
+import DropDown from '../DropDown/DropDown';
 
 const NavBar = props => {
   return (
@@ -57,7 +57,7 @@ const NavBar = props => {
                 SHARE SOMETHING
               </Button>
               <Button>
-                <LongMenu />
+                <DropDown />
               </Button>
             </Link>
           </div>

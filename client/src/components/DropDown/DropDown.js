@@ -1,23 +1,22 @@
-import React from 'react';
-// import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { Link } from 'react-router-dom';
-// import styles from "../DropDown/styles";
+import { withStyles } from '@material-ui/core/styles';
+import styles from './styles';
+import { LOGOUT_MUTATION, VIEWER_QUERY } from '../../apollo/queries';
+import { graphql, compose } from 'react-apollo';
+import { ViewerContext } from '../../context/ViewerProvider';
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 
-const options = [
-  { option: 'Your Profile', path: '/profile/1' },
-  { option: 'Sign Out', path: '/welcome' }
-];
-
-const ITEM_HEIGHT = 50;
-
-class LongMenu extends React.Component {
-  state = {
-    anchorEl: null
-  };
+class DropDown extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -30,43 +29,52 @@ class LongMenu extends React.Component {
   render() {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
+    const { classes, logoutMutation } = this.props;
 
     return (
       <div>
-        <IconButton
-          aria-label="More"
-          aria-owns={open ? 'long-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        >
+        <IconButton onClick={this.handleClick}>
           <MoreVertIcon />
         </IconButton>
         <Menu
-          id="long-menu"
+          id="dropdown"
           anchorEl={anchorEl}
           open={open}
           onClose={this.handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: 200
-            }
-          }}
         >
-          {options.map(o => (
-            <MenuItem
-              key={o}
-              onClick={this.handleClose}
-            >
-              <Link to={o.path}>
-                {o.option}
+          <ViewerContext.Consumer>
+            {({ viewer }) => (
+              <Link to={`/profile/${viewer.id}`}>
+                <MenuItem key="Your Profile" onClick={this.handleClose}>
+                  <FingerprintIcon />
+                  Your Profile
+                </MenuItem>
               </Link>
+            )}
+          </ViewerContext.Consumer>
+
+          <Link to="/welcome">
+            <MenuItem onBlur={this.handleClose} onClick={logoutMutation}>
+              <PowerSettingsNewIcon />
+              Sign Out
             </MenuItem>
-          ))}
+          </Link>
         </Menu>
       </div>
     );
   }
 }
-
-export default LongMenu;
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+];
+export default compose(
+  graphql(LOGOUT_MUTATION, {
+    name: 'logoutMutation',
+    options: {
+      refetchQueries
+    }
+  }),
+  withStyles(styles)
+)(DropDown);

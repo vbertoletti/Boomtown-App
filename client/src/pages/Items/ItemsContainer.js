@@ -4,6 +4,7 @@ import Items from './Items';
 import { 
   ALL_ITEMS_QUERY
 } from '../../apollo/queries';
+import { ViewerContext } from '../../context/ViewerProvider';
 
 class ItemsContainer extends Component {
   render() {

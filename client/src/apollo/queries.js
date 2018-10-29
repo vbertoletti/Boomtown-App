@@ -92,11 +92,11 @@ export const VIEWER_QUERY = gql`
 }
 `;
 
-// export const LOGOUT_MUTATION = gql`
-//   mutation {
-//     # @TODO: Run the logout mutation.
-//   }
-// `;
+export const LOGOUT_MUTATION = gql`
+  mutation {
+    logout
+  }
+`;
 
 export const SIGNUP_MUTATION = gql`
   mutation user($user: NewUserInput!) {
