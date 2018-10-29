@@ -14,55 +14,65 @@ import {
   CardActions
 } from '@material-ui/core';
 import Gravatar from 'react-gravatar';
+import { ViewerContext } from '../../context/ViewerProvider';
 
 const CardForm = ({ classes, item }) => {
   return (
-    <Card className={classes.card}>
-      <CardMedia
-        component="img"
-        className={classes.media}
-        src={item.imageurl}
-        title="Item's picture"
-      />
-      <Link to={`/profile/${item.itemowner.id}`}>
-        <CardHeader
-          avatar={
-            <Gravatar className={classes.avatar} email={item.itemowner.email} />
-          }
-          title={item.itemowner.fullname}
-          subheader={moment(new Date(item.date)).fromNow()}
-        />
-      </Link>
+    <ViewerContext.Consumer>
+      {({ loading, viewer, error }) => {
+        return (
+          <Card className={classes.card}>
+            <CardMedia
+              component="img"
+              className={classes.media}
+              src={item.imageurl}
+              title="Item's picture"
+            />
+            <Link to={`/profile/${item.itemowner.id}`}>
+              <CardHeader
+                avatar={
+                  <Gravatar
+                    className={classes.avatar}
+                    email={item.itemowner.email || viewer.email}
+                  />
+                }
+                title={item.itemowner.fullname || viewer.fullname}
+                subheader={moment(new Date(item.date)).fromNow()}
+              />
+            </Link>
 
-      <CardContent className={classes.cardFormMeta}>
-        <Typography
-          variant="h5"
-          component="h2"
-          className={classes.cardFormTitle}
-        >
-          {item.title}
-        </Typography>
+            <CardContent className={classes.cardFormMeta}>
+              <Typography
+                variant="h5"
+                component="h2"
+                className={classes.cardFormTitle}
+              >
+                {item.title}
+              </Typography>
 
-        <Typography className={classes.cardFormTags}>
-          {item.tags.map(tag => tag.title).join(', ')}
-        </Typography>
+              <Typography className={classes.cardFormTags}>
+                {item.tags.map(tag => tag.title).join(', ')}
+              </Typography>
 
-        <Typography className={classes.cardFormDescription}>
-          {item.description}
-        </Typography>
-      </CardContent>
+              <Typography className={classes.cardFormDescription}>
+                {item.description}
+              </Typography>
+            </CardContent>
 
-      <CardActions>
-        <Button
-          className={classes.cardFormButton}
-          id="sharesubmit"
-          type="submit"
-          variant="contained"
-        >
-          BORROW
-        </Button>
-      </CardActions>
-    </Card>
+            <CardActions>
+              <Button
+                className={classes.cardFormButton}
+                id="sharesubmit"
+                type="submit"
+                variant="contained"
+              >
+                BORROW
+              </Button>
+            </CardActions>
+          </Card>
+        );
+      }}
+    </ViewerContext.Consumer>
   );
 };
 
