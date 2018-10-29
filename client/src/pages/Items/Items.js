@@ -5,6 +5,7 @@ import CardForm from '../../components/CardForm/CardForm';
 import PropTypes from 'prop-types';
 
 const Items = ({ classes, data }) => {
+
   return (
     <div className={classes.cardwrapper}>
       {data.items.map(item => {
