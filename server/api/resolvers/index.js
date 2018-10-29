@@ -12,6 +12,7 @@ module.exports = (app) => {
       viewer(parent, args, context, info) {
         if (context.token) {
           return jwt.decode(context.token, app.get('JWT_SECRET'));
+          
         }
         return null;
       },

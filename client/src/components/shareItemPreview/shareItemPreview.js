@@ -2,8 +2,9 @@ import React from 'react';
 import CardForm from '../CardForm/CardForm';
 import { connect } from 'react-redux';
 
-const ShareItemPreview = ({ shareItemPreview }) => {
-  return <CardForm item={shareItemPreview}/>;
+const ShareItemPreview = ({ shareItemPreview, data}) => {
+  console.log(data)
+  return <CardForm item={shareItemPreview} />;
   
 };
 

@@ -3,22 +3,19 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
+import CardHeader from '@material-ui/core/CardHeader';
 import styles from './styles';
-import logo from '../../images/placeholder1.png';
-import { Link } from 'react-router-dom';
+import Gravatar from 'react-gravatar';
 
 const ProfileCard = ({ classes, data }) => {
   return (
     <Card className={classes.card}>
       <CardContent>
         <div className={classes.profileUserInfoWrapper}>
-          <Avatar
-            src={logo}
-            alt="user's avatar"
-            className={classes.avatar}
-            to="/profile/1"
-            component={Link}
+          <CardHeader
+            avatar={
+              <Gravatar className={classes.avatar} email={data.user.email} />
+            }
           />
           <Typography className={classes.profileCardName} component="h2">
             {data.user.fullname}

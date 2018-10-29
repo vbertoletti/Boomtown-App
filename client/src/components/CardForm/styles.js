@@ -1,6 +1,7 @@
 const styles = theme => ({
   card: {
-    height: '500px'
+    height: '500px',
+    wordWrap: 'break-word'
   },
   media: {
     height: '250px'
