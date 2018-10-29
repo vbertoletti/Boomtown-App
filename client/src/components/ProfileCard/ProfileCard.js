@@ -12,7 +12,6 @@ const ProfileCard = ({ classes, data }) => {
   return (
     <Card className={classes.card}>
       <CardContent>
-
         <div className={classes.profileUserInfoWrapper}>
           <Avatar
             src={logo}
@@ -21,28 +20,31 @@ const ProfileCard = ({ classes, data }) => {
             to="/profile/1"
             component={Link}
           />
-          <Typography className={classes.title} component="h2">
+          <Typography className={classes.profileCardName} component="h2">
             {data.user.fullname}
           </Typography>
         </div>
 
         <div className={classes.profileMetaData}>
           <Typography variant="display1">
-            <span>{data.user.items.length}</span>
-            Shared Items
-            <span>{data.user.borrowed.length}</span>
-            Borrowed Items 
+            <span className={classes.profileCardSpan}>
+              {data.user.items.length}
+            </span>
+            <span className={classes.profileCarditems}>Shared Items</span>
+
+            <span className={classes.profileCardSpan}>
+              {data.user.borrowed.length}
+            </span>
+            <span className={classes.profileCarditems}>Borrowed Items</span>
           </Typography>
         </div>
 
-        <Typography variant="display1" >
-          Bio: <span>{data.user.bio}</span>
+        <Typography variant="display1" className={classes.profileCardBio}>
+          Bio: {data.user.bio}
         </Typography>
-
       </CardContent>
     </Card>
   );
-
 };
 
 export default withStyles(styles)(ProfileCard);

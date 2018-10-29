@@ -1,16 +1,16 @@
 const styles = theme => ({
   cardwrapper: {
-    display: "flex",
-    justifyContent: 'space-around',
-    width: "90vw",
-    margin: "50px auto",
-    flexWrap: "wrap"
-  
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    background: '#212121'
   },
 
   cardchild: {
-    width: "30%"
-
+    width: '30%',
+    marginTop: '30px',
+    marginBottom: '30px',
+    padding: '10px'
   }
 });
 

@@ -1,11 +1,7 @@
 const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%'
-  },
   itemDescription: {
-    width: '100%'
+    width: '100%',
+    paddingBottom: '50px'
   },
   shareButton: {
     boxShadow: 'none',
@@ -35,7 +31,8 @@ const styles = theme => ({
     fontSize: '50px'
   },
   shareImage: {
-    width: '100%'
+    width: '100%',
+    background: '#f9a825'
   }
 });
 

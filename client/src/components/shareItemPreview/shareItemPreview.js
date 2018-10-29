@@ -1,9 +1,9 @@
 import React from 'react';
-import Cardform from '../CardForm/CardForm';
+import CardForm from '../CardForm/CardForm';
 import { connect } from 'react-redux';
 
 const ShareItemPreview = ({ shareItemPreview }) => {
-  return <Cardform item={shareItemPreview}/>;
+  return <CardForm item={shareItemPreview}/>;
   
 };
 
