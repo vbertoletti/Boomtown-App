@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/icons/AddCircle';
 import DropDown from '../DropDown/DropDown';
+// import styles from './styles';
 
 const NavBar = props => {
   return (
@@ -40,7 +41,11 @@ const NavBar = props => {
               }}
             />
           </Link>
-          <div>
+          <div
+            style={{
+              display: 'flex'
+            }}
+          >
             <Link
               to="/share"
               style={{
@@ -56,10 +61,8 @@ const NavBar = props => {
                 />
                 SHARE SOMETHING
               </Button>
-              <Button>
-                <DropDown />
-              </Button>
             </Link>
+            <DropDown />
           </div>
         </Toolbar>
       </AppBar>
