@@ -83,7 +83,7 @@ class ShareItemForm extends React.Component {
     const { classes, tags, updateNewItem } = this.props;
     return (
       <div className={this.props.classes.root}>
-        <Typography component="h1" variant="h1" className={classes.heading}>
+        <Typography component="h1" className={classes.heading}>
           Share. Borrow.<br /> Prosper.
         </Typography>
         <Form

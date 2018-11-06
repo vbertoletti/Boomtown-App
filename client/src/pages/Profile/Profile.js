@@ -15,7 +15,7 @@ const Profile = ({ classes, data, viewerId }) => {
       <ProfileCard data={data} />
       <div className={classes.cardForm}>
         <Typography variant="display1" className={classes.headline}>
-          {data.user.items.length > 0 && <h3>Shared Items</h3>}
+          {data.user.items.length > 0 && <p>Shared Items</p>}
         </Typography>
         <Grid container>
           {viewerItems &&

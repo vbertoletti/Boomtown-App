@@ -10,7 +10,7 @@ const Items = ({ classes, data }) => {
     <div className={classes.cardwrapper}>
       {data.items.map(item => {
         return (
-          <div className={classes.cardchild}>
+          <div key={item.id} className={classes.cardchild}>
             <CardForm key={item.id} item={item} />
           </div>
         );

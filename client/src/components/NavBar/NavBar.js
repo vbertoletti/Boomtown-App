@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/icons/AddCircle';
 import DropDown from '../DropDown/DropDown';
-// import styles from './styles';
+import styles from './styles';
 
 const NavBar = props => {
   return (
@@ -70,4 +70,4 @@ const NavBar = props => {
   );
 };
 
-export default withStyles()(withRouter(NavBar));
+export default withStyles(styles)(withRouter(NavBar));

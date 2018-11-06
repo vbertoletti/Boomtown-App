@@ -43,7 +43,7 @@ const CardForm = ({ classes, item }) => {
 
             <CardContent className={classes.cardFormMeta}>
               <Typography
-                variant="h5"
+                // variant="h5"
                 component="h2"
                 className={classes.cardFormTitle}
               >
