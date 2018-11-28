@@ -25,7 +25,7 @@ const CardForm = ({ classes, item }) => {
             <CardMedia
               component="img"
               className={classes.media}
-              image={item.imageurl}
+              src={'https://noble.mediapressions.com/noble-contracting/files/small_852.jpg' || item.imageurl}
               title="Item's picture"
             />
             <Link to={`/profile/${item.itemowner.id}`}>

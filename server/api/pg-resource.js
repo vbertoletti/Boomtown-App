@@ -171,12 +171,13 @@ module.exports = (postgres) => {
                 const { title, description, tags } = item;
 
                 // Generate new Item query
-                // @TODO
-                // -------------------------------
+                const newItemQuery = {
+                  text: `INSERT INTO items (title, description, ownerid) VALUES( $1, $2, $3 )RETURNING *`,
+                  values: [title, description, user.id]
+                }
 
                 // Insert new Item
-                // @TODO
-                // -------------------------------
+                const newItem = await client.query(newItemQuery)
 
                 const imageUploadQuery = {
                   text:

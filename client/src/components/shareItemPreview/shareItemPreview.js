@@ -8,7 +8,7 @@ const ShareItemPreview = ({ shareItemPreview, item}) => {
 };
 
 const mapStateToProps = state => ({
-  shareItemPreview: state.shareItemPreview
+  ShareItemPreview: state.ShareItemPreview
 });
 
 export default connect(mapStateToProps)(ShareItemPreview);
