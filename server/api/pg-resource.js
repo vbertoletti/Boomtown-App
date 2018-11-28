@@ -130,43 +130,20 @@ module.exports = (postgres) => {
     },
 
     async saveNewItem({ item, image, user }) {
-      /**
-       *  @TODO: Adding a New Item
-       *
-       *  Adding a new Item to Posgtres is the most advanced query.
-       *  It requires 3 separate INSERT statements.
-       *
-       *  All of the INSERT statements must:
-       *  1) Proceed in a specific order.
-       *  2) Succeed for the new Item to be considered added
-       *  3) If any of the INSERT queries fail, any successful INSERT
-       *     queries should be 'rolled back' to avoid 'orphan' data in the database.
-       *
-       *  To achieve #3 we'll ue something called a Postgres Transaction!
-       *  The code for the transaction has been provided for you, along with
-       *  helpful comments to help you get started.
-       *
-       *  Read the method and the comments carefully before you begin.
-       */
-
       return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         */
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
-            client.query('BEGIN', err => {
+            client.query('BEGIN', async err => {
               // Convert image (file stream) to Base64
-              const imageStream = image.stream.pipe(strs('base64'));
+              // const imageStream = image.stream.pipe(strs('base64'));
 
-              let base64Str = '';
-              imageStream.on('data', data => {
-                base64Str += data;
-              });
+              // let base64Str = '';
+              // imageStream.on('data', data => {
+              //   base64Str += data;
+              // });
 
-              imageStream.on('end', async () => {
+              // imageStream.on('end', async () => {
                 // Image has been converted, begin saving things
                 const { title, description, tags } = item;
 
@@ -178,22 +155,34 @@ module.exports = (postgres) => {
 
                 // Insert new Item
                 const newItem = await client.query(newItemQuery)
+                const itemId = newItem.rows[0].id;
 
-                const imageUploadQuery = {
-                  text:
-                    'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-                  values: [
-                    // itemid,
-                    image.filename,
-                    image.mimetype,
-                    'base64',
-                    base64Str
-                  ]
+                const tagsQuery = {
+                  text: `INSERT INTO itemtags (tagsid, itemid) VALUES ${tagsQueryString(
+                      [...tags],
+                      itemId,
+                      ''
+                  )}`,
+                  values: tags.map(tag => tag.id)
                 };
 
+                await client.query(tagsQuery);
+
+                // const imageUploadQuery = {
+                //   text:
+                //     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                //   values: [
+                //     // itemid,
+                //     image.filename,
+                //     image.mimetype,
+                //     'base64',
+                //     base64Str
+                //   ]
+                // };
+
                 // Upload image
-                const uploadedImage = await client.query(imageUploadQuery);
-                const imageid = uploadedImage.rows[0].id;
+                // const uploadedImage = await client.query(imageUploadQuery);
+                // const imageid = uploadedImage.rows[0].id;
 
                 // Generate image relation query
                 // @TODO
@@ -216,21 +205,16 @@ module.exports = (postgres) => {
                   if (err) {
                     throw err;
                   }
-                  // release the client back to the pool
                   done();
-                  // Uncomment this resolve statement when you're ready!
-                  // resolve(newItem.rows[0])
-                  // -------------------------------
+                  resolve(newItem.rows[0])
                 });
-              });
+              // });
             });
           } catch (e) {
-            // Something went wrong
             client.query('ROLLBACK', err => {
               if (err) {
                 throw err;
               }
-              // release the client back to the pool
               done();
             });
             switch (true) {

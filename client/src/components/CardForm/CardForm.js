@@ -19,16 +19,14 @@ import { ViewerContext } from '../../context/ViewerProvider';
 const CardForm = ({ classes, item }) => {
   return (
     <ViewerContext.Consumer>
-      {({ loading, viewer, error }) => {
+      {({ viewer }) => {
         return (
           <Card className={classes.card}>
             <CardMedia
               component="img"
               className={classes.media}
               src={
-                item.imageurl
-                  ? item.imageurl
-                  : 'https://noble.mediapressions.com/noble-contracting/files/small_852.jpg'
+                'https://noble.mediapressions.com/noble-contracting/files/small_852.jpg'
               }
               title="Item's picture"
             />
@@ -46,11 +44,7 @@ const CardForm = ({ classes, item }) => {
             </Link>
 
             <CardContent className={classes.cardFormMeta}>
-              <Typography
-                // variant="h5"
-                component="h2"
-                className={classes.cardFormTitle}
-              >
+              <Typography component="h2" className={classes.cardFormTitle}>
                 {item.title}
               </Typography>
 

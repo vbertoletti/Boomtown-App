@@ -15,6 +15,10 @@ import {
 } from './../../redux/modules/shareItemPreview';
 import { Checkbox, ListItemText } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
+import { graphql } from 'react-apollo';
+import { ADD_ITEM_MUTATION } from '../../apollo/queries';
+import {VIEWER_QUERY } from "../../apollo/queries";
+import { compose } from 'redux';
 
 class ShareItemForm extends React.Component {
   constructor() {
@@ -79,17 +83,33 @@ class ShareItemForm extends React.Component {
     this.setState({ fileSelected: this.fileInput.current.files[0] });
   }
 
+  saveItem(values, addItemMutation, tags) {
+    console.log(values);
+    const itemData = {
+      title: values.title,
+      description: values.description,
+      tags: this.applyTags(tags)
+    };
+
+    addItemMutation({
+      variables: {
+        item: itemData
+      }
+    })
+
+  }
+
   render() {
-    const { classes, tags, updateNewItem } = this.props;
+    const { classes, tags, updateNewItem, addItemMutation  } = this.props;
     return (
       <div className={this.props.classes.root}>
         <Typography component="h1" className={classes.heading}>
           Share. Borrow.<br /> Prosper.
         </Typography>
         <Form
-          onSubmit={(e, form) => this.submitTheForm(e, form)}
+          onSubmit={values => this.saveItem(values, addItemMutation, tags)}
           render={({ handleSubmit, pristine, invalid }) => (
-            <form>
+            <form onSubmit={handleSubmit}>
               <FormSpy
                 subscription={{ values: true }}
                 component={({ values }) => {
@@ -102,11 +122,13 @@ class ShareItemForm extends React.Component {
               <fieldset className={classes.form}>
                 <Field
                   name="imageurl"
-                  
                   render={({ input, meta }) => (
                     <React.Fragment>
                       {!this.state.fileSelected ? (
-                        <Button onClick={() => this.fileInput.current.click()} className={classes.shareImage}>
+                        <Button
+                          onClick={() => this.fileInput.current.click()}
+                          className={classes.shareImage}
+                        >
                           <Typography>Select Image</Typography>
                         </Button>
                       ) : (
@@ -123,7 +145,6 @@ class ShareItemForm extends React.Component {
                       />
                     </React.Fragment>
                   )}
-                  
                 />
 
                 <Field
@@ -185,7 +206,7 @@ class ShareItemForm extends React.Component {
                 />
               </fieldset>
               <fieldset className={classes.shareFieldset}>
-                <Button className={classes.shareButton} variant="contained">
+                <Button className={classes.shareButton} variant="contained" type="submit">
                   SHARE
                 </Button>
               </fieldset>
@@ -208,8 +229,20 @@ const mapDispatchToProps = dispatch => ({
     dispatch(ResetNewItemImage());
   }
 });
-
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+];
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(ShareItemForm));
+)(
+  compose(
+    graphql(ADD_ITEM_MUTATION, {
+      options: { refetchQueries },
+      name: 'addItemMutation'
+    }),
+    withStyles(styles)
+  )(ShareItemForm)
+);

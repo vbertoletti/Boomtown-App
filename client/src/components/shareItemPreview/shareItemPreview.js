@@ -2,13 +2,14 @@ import React from 'react';
 import CardForm from '../CardForm/CardForm';
 import { connect } from 'react-redux';
 
-const ShareItemPreview = ({ shareItemPreview, item}) => {
-  return <CardForm item={shareItemPreview} />;
+const ShareItemPreview = ({ item}) => {
+
+  return <CardForm item={item} />;
   
 };
 
 const mapStateToProps = state => ({
-  ShareItemPreview: state.ShareItemPreview
+  item: state.shareItemPreview
 });
 
 export default connect(mapStateToProps)(ShareItemPreview);

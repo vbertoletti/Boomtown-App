@@ -1,3 +1,3 @@
-import ShareItemPreview from './shareItemPreview';
+import ShareItemPreview from './ShareItemPreview';
 
 export default ShareItemPreview;

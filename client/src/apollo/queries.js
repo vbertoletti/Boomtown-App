@@ -1,16 +1,15 @@
 import gql from 'graphql-tag';
 
 const ItemFields = gql`
-  fragment ItemFields on Item { 
-    
-    id 
+  fragment ItemFields on Item {
+    id
     title
     imageurl
     description
     date
     tags {
       id
-      title 
+      title
     }
 
     itemowner {
@@ -26,7 +25,6 @@ const ItemFields = gql`
       email
       bio
     }
-
   }
 `;
 
@@ -73,8 +71,16 @@ export const ALL_TAGS_QUERY = gql`
 `;
 
 export const ADD_ITEM_MUTATION = gql`
-  mutation addItem($item: NewItemInput!, $image: Upload!) {
-    id
+  mutation addItem($item: NewItemInput!) {
+    addItem(item: $item) {
+      id
+      title
+      description
+      tags {
+        title
+        id
+      }
+    }
   }
 `;
 
@@ -84,12 +90,12 @@ export const ADD_ITEM_MUTATION = gql`
 
 export const VIEWER_QUERY = gql`
   query {
-  viewer{
-    id
-    fullname
-    email
+    viewer {
+      id
+      fullname
+      email
+    }
   }
-}
 `;
 
 export const LOGOUT_MUTATION = gql`
@@ -100,19 +106,18 @@ export const LOGOUT_MUTATION = gql`
 
 export const SIGNUP_MUTATION = gql`
   mutation user($user: NewUserInput!) {
-  signup(user: $user) {
-    fullname
-    email
+    signup(user: $user) {
+      fullname
+      email
+    }
   }
-}
 `;
 
 export const LOGIN_MUTATION = gql`
-mutation user($id: Login! ) {
-  login(user: $id) {
-    id
-    fullname
+  mutation user($id: Login!) {
+    login(user: $id) {
+      id
+      fullname
+    }
   }
-  
-}
 `;

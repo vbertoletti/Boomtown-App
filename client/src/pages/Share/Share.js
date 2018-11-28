@@ -2,7 +2,7 @@ import { withStyles } from '@material-ui/core/styles';
 import React from 'react';
 import ShareItemForm from '../../components/ShareItemForm';
 import styles from './styles';
-import ShareItemPreview from '../../components/shareItemPreview/'
+import ShareItemPreview from '../../components/ShareItemPreview/'
 
 const Share = ({ classes, tags }) => {
   return (
