@@ -25,6 +25,7 @@ module.exports = (app) => {
         }
       },
       async items(parent, {filter}, {pgResource}, info) {
+        console.log(filter)
         try {
           const items = await pgResource.getItems(filter);
           return items

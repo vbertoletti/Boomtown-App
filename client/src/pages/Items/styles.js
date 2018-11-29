@@ -3,7 +3,9 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    background: '#212121'
+    background: '#212121',
+    height: "100%",
+    width: "100%"
   },
 
   cardchild: {

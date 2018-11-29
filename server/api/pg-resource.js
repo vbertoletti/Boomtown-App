@@ -62,14 +62,18 @@ module.exports = postgres => {
     },
 
     async getItems(filter) {
+      let text = `SELECT items.id, items.title, items.description, items.ownerid, items.borrowerid, items.date, uploads.data AS imageurl FROM items
+      INNER JOIN uploads ON uploads.itemid = items.id ORDER BY items.date DESC`;
+      if (filter) {
+        text = `SELECT items.id, items.title, items.description, items.ownerid, items.borrowerid, items.date, uploads.data AS imageurl FROM items
+         INNER JOIN uploads ON uploads.itemid = items.id WHERE ownerid <> $1 AND borrowerid IS NULL ORDER BY items.date DESC`;
+      }
+
       const items = await postgres.query({
-        text: `SELECT *
-        FROM items          
-        WHERE ownerid <> $1 AND borrowerid <> $1 OR borrowerid IS NULL`,
+        text: text,
         values: filter ? [filter] : []
       });
       try {
-        if (!items) throw 'Item was not found.';
         return items.rows;
       } catch (e) {
         throw 'Items were not found.';
@@ -78,8 +82,8 @@ module.exports = postgres => {
 
     async getItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT *
-        FROM items WHERE ownerid = $1`,
+        text: `SELECT items.id, items.title, items.description, items.ownerid, items.borrowerid, items.date, uploads.data AS imageurl FROM items
+        INNER JOIN uploads ON uploads.itemid = items.id WHERE ownerid = $1 ORDER BY items.date DESC`,
         values: [id]
       });
       try {
@@ -92,8 +96,8 @@ module.exports = postgres => {
 
     async getBorrowedItemsForUser(id) {
       const items = await postgres.query({
-        text: `SELECT *
-        FROM items WHERE borrowerid = $1 `,
+        text: `SELECT items.id, items.title, items.description, items.ownerid, items.borrowerid, items.date, uploads.data AS imageurl FROM items
+        INNER JOIN uploads ON uploads.itemid = items.id WHERE borrowerid = $1 ORDER BY items.date DESC`,
         values: [id]
       });
       try {

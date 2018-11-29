@@ -33,7 +33,7 @@ class AccountForm extends Component {
         onSubmit={values => {
           this.state.formToggle
             ? loginMutation({ variables: { id: values } })
-            : signupMutation({ variables: { id: values } });
+            : signupMutation({ variables: { user: values } });
         }}       
         render={({ handleSubmit, pristine, invalid }) => (
           <form onSubmit={handleSubmit} className={classes.accountForm}>
