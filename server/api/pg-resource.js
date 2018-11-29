@@ -12,11 +12,12 @@ function tagsQueryString(tags, itemid, result) {
         );
 }
 
-module.exports = (postgres) => {
+module.exports = postgres => {
   return {
     async createUser({ email, fullname, bio, password }) {
       const newUserInsert = {
-        text: 'INSERT INTO users (email, fullname, bio, password) VALUES($1,$2,$3,$4) RETURNING *', 
+        text:
+          'INSERT INTO users (email, fullname, bio, password) VALUES($1,$2,$3,$4) RETURNING *',
         values: [email, fullname, bio, password]
       };
       try {
@@ -60,7 +61,7 @@ module.exports = (postgres) => {
       }
     },
 
-    async getItems(filter) {     
+    async getItems(filter) {
       const items = await postgres.query({
         text: `SELECT *
         FROM items          
@@ -72,9 +73,9 @@ module.exports = (postgres) => {
         return items.rows;
       } catch (e) {
         throw 'Items were not found.';
-        }
-      },
-      
+      }
+    },
+
     async getItemsForUser(id) {
       const items = await postgres.query({
         text: `SELECT *
@@ -84,12 +85,12 @@ module.exports = (postgres) => {
       try {
         if (!items) throw 'User has no items.';
         return items.rows;
-      }catch (e) {
+      } catch (e) {
         throw 'No items for this user.';
-      }    
+      }
     },
-    
-    async getBorrowedItemsForUser(id) {      
+
+    async getBorrowedItemsForUser(id) {
       const items = await postgres.query({
         text: `SELECT *
         FROM items WHERE borrowerid = $1 `,
@@ -99,7 +100,7 @@ module.exports = (postgres) => {
         if (!items) throw 'No borrowed items for this user.';
         return items.rows;
       } catch (e) {
-        throw 'No borrowed items for this user.'
+        throw 'No borrowed items for this user.';
       }
     },
 
@@ -108,11 +109,11 @@ module.exports = (postgres) => {
         const tags = await postgres.query({
           text: `SELECT * FROM tags`
         });
-        if (!tags) throw 'Tags not found.'
+        if (!tags) throw 'Tags not found.';
         return tags.rows;
       } catch (e) {
-        throw 'Tags not found.'
-      }      
+        throw 'Tags not found.';
+      }
     },
 
     async getTagsForItem(id) {
@@ -122,7 +123,7 @@ module.exports = (postgres) => {
       };
       try {
         const tags = await postgres.query(tagsQuery);
-        if (!tags) throw 'Tags for item not found.'
+        if (!tags) throw 'Tags for item not found.';
         return tags.rows;
       } catch (e) {
         throw 'Tags for item not found.';
@@ -133,17 +134,15 @@ module.exports = (postgres) => {
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
-            // Begin postgres transaction
             client.query('BEGIN', async err => {
-              // Convert image (file stream) to Base64
-              // const imageStream = image.stream.pipe(strs('base64'));
+              const imageStream = image.stream.pipe(strs('base64'));
 
-              // let base64Str = '';
-              // imageStream.on('data', data => {
-              //   base64Str += data;
-              // });
+              let base64Str = 'data:image/*;base64, ';
+              imageStream.on('data', data => {
+                base64Str += data;
+              });
 
-              // imageStream.on('end', async () => {
+              imageStream.on('end', async () => {
                 // Image has been converted, begin saving things
                 const { title, description, tags } = item;
 
@@ -151,54 +150,37 @@ module.exports = (postgres) => {
                 const newItemQuery = {
                   text: `INSERT INTO items (title, description, ownerid) VALUES( $1, $2, $3 )RETURNING *`,
                   values: [title, description, user.id]
-                }
+                };
 
                 // Insert new Item
-                const newItem = await client.query(newItemQuery)
+                const newItem = await client.query(newItemQuery);
                 const itemId = newItem.rows[0].id;
+
+                const imageUploadQuery = {
+                  text:
+                    'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                  values: [
+                    itemId,
+                    image.filename,
+                    image.mimetype,
+                    'base64',
+                    base64Str
+                  ]
+                };
+
+                // Upload image
+                await client.query(imageUploadQuery);
 
                 const tagsQuery = {
                   text: `INSERT INTO itemtags (tagsid, itemid) VALUES ${tagsQueryString(
-                      [...tags],
-                      itemId,
-                      ''
+                    [...tags],
+                    itemId,
+                    ''
                   )}`,
                   values: tags.map(tag => tag.id)
                 };
 
                 await client.query(tagsQuery);
-
-                // const imageUploadQuery = {
-                //   text:
-                //     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-                //   values: [
-                //     // itemid,
-                //     image.filename,
-                //     image.mimetype,
-                //     'base64',
-                //     base64Str
-                //   ]
-                // };
-
-                // Upload image
-                // const uploadedImage = await client.query(imageUploadQuery);
-                // const imageid = uploadedImage.rows[0].id;
-
-                // Generate image relation query
-                // @TODO
-                // -------------------------------
-
-                // Insert image
-                // @TODO
-                // -------------------------------
-
-                // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-                // @TODO
-                // -------------------------------
-
-                // Insert tags
-                // @TODO
-                // -------------------------------
 
                 // Commit the entire transaction!
                 client.query('COMMIT', err => {
@@ -206,9 +188,9 @@ module.exports = (postgres) => {
                     throw err;
                   }
                   done();
-                  resolve(newItem.rows[0])
+                  resolve(newItem.rows[0]);
                 });
-              // });
+              });
             });
           } catch (e) {
             client.query('ROLLBACK', err => {

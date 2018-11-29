@@ -8,6 +8,11 @@ const styles = theme => ({
     color: '#f9a825',
     fontSize: '30px'
   },
+
+  profileItemCard: {
+    margin: 20,
+    width: "30%"
+  }
   
 });
 

@@ -17,7 +17,7 @@ import { Checkbox, ListItemText } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import { graphql } from 'react-apollo';
 import { ADD_ITEM_MUTATION } from '../../apollo/queries';
-import {VIEWER_QUERY } from "../../apollo/queries";
+import { VIEWER_QUERY } from '../../apollo/queries';
 import { compose } from 'redux';
 
 class ShareItemForm extends React.Component {
@@ -84,23 +84,32 @@ class ShareItemForm extends React.Component {
   }
 
   saveItem(values, addItemMutation, tags) {
-    console.log(values);
-    const itemData = {
-      title: values.title,
-      description: values.description,
-      tags: this.applyTags(tags)
-    };
+    const {
+      validity,
+      files: [file]
+    } = this.fileInput.current;
+    if (!validity.valid || !file) return;
 
-    addItemMutation({
-      variables: {
-        item: itemData
-      }
-    })
+    try {
+      const itemData = {
+        title: values.title,
+        description: values.description,
+        tags: this.applyTags(tags)
+      };
 
+      addItemMutation({
+        variables: {
+          item: itemData,
+          image: file
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   render() {
-    const { classes, tags, updateNewItem, addItemMutation  } = this.props;
+    const { classes, tags, updateNewItem, addItemMutation } = this.props;
     return (
       <div className={this.props.classes.root}>
         <Typography component="h1" className={classes.heading}>
@@ -206,7 +215,11 @@ class ShareItemForm extends React.Component {
                 />
               </fieldset>
               <fieldset className={classes.shareFieldset}>
-                <Button className={classes.shareButton} variant="contained" type="submit">
+                <Button
+                  className={classes.shareButton}
+                  variant="contained"
+                  type="submit"
+                >
                   SHARE
                 </Button>
               </fieldset>

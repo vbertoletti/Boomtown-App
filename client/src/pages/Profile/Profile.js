@@ -21,16 +21,9 @@ const Profile = ({ classes, data, viewerId }) => {
           {viewerItems &&
             viewerItems.map(item => {
               return (
-                <Grid
-                  item
-                  key={item.id}
-                  xs={12}
-                  md={6}
-                  lg={4}
-                  className={classes.itemCard}
-                >
+                <div key={item.id} className={classes.profileItemCard}>
                   <CardForm item={item} />
-                </Grid>
+                </div>
               );
             })}
         </Grid>
